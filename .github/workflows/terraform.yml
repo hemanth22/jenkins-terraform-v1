@@ -75,7 +75,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -out jenkins
+      run: terraform plan -out=jenkins
       env:
         ARM_CLIENT_ID: ${{ secrets.TF_AZURE_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.TF_AZURE_SECRET }}
