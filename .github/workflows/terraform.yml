@@ -68,6 +68,11 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      env:
+        AZURE_CLIENT_ID: ${{ secrets.TF_AZURE_CLIENT_ID }}
+        AZURE_SECRET: ${{ secrets.TF_AZURE_SECRET }}
+        AZURE_SUBSCRIPTION_ID: ${{ secrets.TF_AZURE_SUBSCRIPTION_ID }}
+        AZURE_TENANT: ${{ secrets.TF_AZURE_TENANT }}
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
@@ -76,18 +81,8 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan
-      env:
-        AZURE_CLIENT_ID: ${{ secrets.TF_AZURE_CLIENT_ID }}
-        AZURE_SECRET: ${{ secrets.TF_AZURE_SECRET }}
-        AZURE_SUBSCRIPTION_ID: ${{ secrets.TF_AZURE_SUBSCRIPTION_ID }}
-        AZURE_TENANT: ${{ secrets.TF_AZURE_TENANT }}
     
       # On push to master, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       run: terraform apply -auto-approve
-      env:
-        AZURE_CLIENT_ID: ${{ secrets.TF_AZURE_CLIENT_ID }}
-        AZURE_SECRET: ${{ secrets.TF_AZURE_SECRET }}
-        AZURE_SUBSCRIPTION_ID: ${{ secrets.TF_AZURE_SUBSCRIPTION_ID }}
-        AZURE_TENANT: ${{ secrets.TF_AZURE_TENANT }}
