@@ -86,4 +86,8 @@ jobs:
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       run: terraform apply -auto-approve
-
+      env:
+        AZURE_CLIENT_ID: ${{ secrets.TF_AZURE_CLIENT_ID }}
+        AZURE_SECRET: ${{ secrets.TF_AZURE_SECRET }}
+        AZURE_SUBSCRIPTION_ID: ${{ secrets.TF_AZURE_SUBSCRIPTION_ID }}
+        AZURE_TENANT: ${{ secrets.TF_AZURE_TENANT }}
