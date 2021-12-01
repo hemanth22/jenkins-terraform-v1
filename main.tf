@@ -1,6 +1,14 @@
 # Configure the Microsoft Azure Provider.
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+    }
+  }
+}
+
 provider "azurerm" {
-  version = "~>1.31"
+  features {}
 }
 
 # Create a resource group
@@ -22,7 +30,7 @@ resource "azurerm_subnet" "jenkins" {
   name                 = "acctsub"
   resource_group_name  = azurerm_resource_group.jenkins.name
   virtual_network_name = azurerm_virtual_network.jenkins.name
-  address_prefix       = "10.0.2.0/24"
+  address_prefixes     = ["10.0.2.0/24"]
 }
 
 # Create public IP Address
@@ -58,7 +66,6 @@ resource "azurerm_network_interface" "jenkins" {
   name                = "acctni"
   location            = azurerm_resource_group.jenkins.location
   resource_group_name = azurerm_resource_group.jenkins.name
-  network_security_group_id = azurerm_network_security_group.jenkins.id
 
   ip_configuration {
     name                          = "testconfiguration1"
