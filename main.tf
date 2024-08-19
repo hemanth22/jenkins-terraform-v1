@@ -3,12 +3,26 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
+      version = "~> 3.0.2"
     }
   }
+  required_version = ">= 1.1.0"
 }
 
 provider "azurerm" {
-  features {}
+  features {
+
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+
+    virtual_machine {
+      delete_os_disk_on_deletion            = true
+      graceful_shutdown                     = false
+      skip_shutdown_and_force_delete        = false
+    }
+
+  }
 }
 
 # Create a resource group
@@ -70,7 +84,7 @@ resource "azurerm_network_interface" "jenkins" {
   ip_configuration {
     name                          = "testconfiguration1"
     subnet_id                     = azurerm_subnet.jenkins.id
-    private_ip_address_allocation = "dynamic"
+    private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.jenkins.id
   }
 }
@@ -92,9 +106,9 @@ resource "azurerm_virtual_machine" "jenkins" {
   }
 
   storage_os_disk {
-    name          = "myosdisk1"
-    caching       = "ReadWrite"
-    create_option = "FromImage"
+    name              = "myosdisk1"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
@@ -118,7 +132,7 @@ resource "azurerm_virtual_machine_extension" "jenkins" {
 
   settings = <<SETTINGS
     {
-        "commandToExecute": "echo "Jenkins"
+        "commandToExecute": "echo Jenkins"
     }
 SETTINGS
 
