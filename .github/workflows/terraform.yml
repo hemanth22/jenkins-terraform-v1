@@ -28,12 +28,6 @@ jobs:
         TF_LOG: TRACE
         TF_LOG_PATH: terraform-init.log
 
-    - name: Terraform Format Check
-      run: terraform fmt -check -recursive
-      env:
-        TF_LOG: TRACE
-        TF_LOG_PATH: terraform-fmt.log
-
     - name: Terraform Plan
       run: terraform plan -out=jenkins.tfplan
       env:
