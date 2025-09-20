@@ -24,13 +24,21 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
+      env:
+        TF_LOG: TRACE
+        TF_LOG_PATH: terraform-init.log
 
     - name: Terraform Format Check
-      run: terraform fmt -check
+      run: terraform fmt -check -recursive
+      env:
+        TF_LOG: TRACE
+        TF_LOG_PATH: terraform-fmt.log
 
     - name: Terraform Plan
       run: terraform plan -out=jenkins.tfplan
       env:
+        TF_LOG: TRACE
+        TF_LOG_PATH: terraform-plan.log
         ARM_CLIENT_ID: ${{ secrets.TF_AZURE_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.TF_AZURE_SECRET }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.TF_AZURE_SUBSCRIPTION_ID }}
@@ -39,6 +47,8 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -auto-approve "jenkins.tfplan"
       env:
+        TF_LOG: TRACE
+        TF_LOG_PATH: terraform-apply.log
         ARM_CLIENT_ID: ${{ secrets.TF_AZURE_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.TF_AZURE_SECRET }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.TF_AZURE_SUBSCRIPTION_ID }}
